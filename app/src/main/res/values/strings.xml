@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">GPS</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_maps">Ubicacion actual</string>
+    <string name="nav_acercade">Acerca de...</string>
+    <string name="drawer_open">Drawer_open</string>
+    <string name="drawer_close">Drawer_close</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="integrantes">Esteban Rojas Herrera, y Oscar Zamora Ramirez</string>
+    <string name="salir">salir</string>
+    <string name="configurar_text">configurar_text</string>
+    <string name="nav_configuracion">Configuracion</string>
+
+</resources>

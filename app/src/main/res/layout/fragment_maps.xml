@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapsFragment" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editar_location_longitud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Seach Longitud" />
+
+        <EditText
+            android:id="@+id/editar_location_latitud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Seach Latitud" />
+
+        <Button
+            android:id="@+id/btn_Buscar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seach" />
+
+    </LinearLayout>
+
+</fragment>
