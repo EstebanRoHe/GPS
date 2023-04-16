@@ -13,5 +13,6 @@
     <string name="salir">salir</string>
     <string name="configurar_text">configurar_text</string>
     <string name="nav_configuracion">Configuracion</string>
+    <string name="nombresIntegrantes">Integrantes :</string>
 
 </resources>

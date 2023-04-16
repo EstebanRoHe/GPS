@@ -15,11 +15,12 @@
             android:id="@+id/configuracion"
             android:title="@string/nav_configuracion"
             android:icon="@android:drawable/ic_menu_edit"/>
-
+<!--
         <item
             android:id="@+id/home"
             android:title="@string/nav_home"
             android:icon="@android:drawable/ic_menu_delete"/>
+            -->
 
 
 

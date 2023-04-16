@@ -19,6 +19,7 @@
             android:layout_height="?attr/actionBarSize"/>
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/acercade_contet"
         android:layout_width="match_parent"
