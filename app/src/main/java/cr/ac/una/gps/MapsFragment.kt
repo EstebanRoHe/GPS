@@ -8,23 +8,21 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.location.Location
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import cr.ac.una.gps.adapter.UbicacionAdapter
+import com.google.android.gms.maps.model.Polygon
+import com.google.android.gms.maps.model.PolygonOptions
+import com.google.maps.android.PolyUtil
 
 import cr.ac.una.gps.dao.UbicacionDao
 import cr.ac.una.gps.db.AppDatabase
@@ -42,19 +40,48 @@ class MapsFragment : Fragment() {
     private lateinit var ubicacionDao: UbicacionDao
     private lateinit var locationReceiver: BroadcastReceiver
     //private lateinit var ubicaciones: List<Ubicacion>
+    private lateinit var polygon: Polygon
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prefs = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         ubicacionDao = AppDatabase.getInstance(requireContext()).ubicacionDao()
         titulo = prefs.getString("marker_label", "") ?: ""
+
     }
+
+
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
         iniciaServicio()//iniciaServicios es dar permisos
 
+    }
+
+    private fun createPolygon(): Polygon {
+        val polygonOptions = PolygonOptions()
+
+       /* polygonOptions.add(LatLng(10.630345,-84.8094284))
+        polygonOptions.add(LatLng( 10.2954322,-85.1005661))
+        polygonOptions.add(LatLng( 10.1710993,-84.4249069 ))
+        polygonOptions.add(LatLng(  10.5385502,-84.161235 ))
+        polygonOptions.add(LatLng( 10.7437006,-84.4633591 ))
+        polygonOptions.add(LatLng(  10.630345,-84.8094284))
+*/
+        polygonOptions.add(LatLng(-14.0095923,108.8152324))
+        polygonOptions.add(LatLng( -43.3897529,104.2449199))
+        polygonOptions.add(LatLng( -51.8906238,145.7292949))
+        polygonOptions.add(LatLng( -31.7289525,163.3074199))
+        polygonOptions.add(LatLng( -7.4505398,156.2761699))
+        polygonOptions.add(LatLng( -14.0095923,108.8152324))
+
+        return map.addPolygon(polygonOptions)
+
+    }
+
+    private fun isLocationInsidePolygon(location: LatLng): Boolean {
+        return polygon != null && PolyUtil.containsLocation(location, polygon?.points, true)
     }
 
     override fun onCreateView(
@@ -72,19 +99,31 @@ class MapsFragment : Fragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
         pintar()
+
+
         locationReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 val latitud = intent?.getDoubleExtra("latitud", 0.0) ?: 0.0
                 val longitud = intent?.getDoubleExtra("longitud", 0.0) ?: 0.0
-                //println(latitud.toString() + "    " + longitud)
                 val posicion = LatLng(latitud, longitud)
                 val marcador = MarkerOptions().position(posicion)
                 if (titulo.isNotEmpty()) {
                     marcador.title(titulo)
                 }
+
+                polygon = createPolygon()
+                if (isLocationInsidePolygon(posicion)){
+                    println("+++++++++++++++++++++++++++++++++sidney esta en el mapa" )
+                }
+
+                if (!isLocationInsidePolygon(posicion)){
+                    println("+++++++++++++++++++++++++++++++++CR no  esta en el mapa" )
+                }
+
                 map.addMarker(marcador)
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 12f))
-                val entity = Ubicacion(null, latitud, longitud, Date())
+               // map.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 12f))
+
+                val entity = Ubicacion(null, latitud, longitud, Date(), !isLocationInsidePolygon(posicion))
                 insertEntity(entity)
             }
         }
@@ -92,6 +131,7 @@ class MapsFragment : Fragment() {
 
 
     }
+
 
     fun pintar() {// es pintar todos los marcadores ya guardados en la base de datos
         Thread {
@@ -101,6 +141,7 @@ class MapsFragment : Fragment() {
                 ubicaciones.forEach {
                     val miPosicion = LatLng(it.latitud, it.longitud)
                     val markerOptions = MarkerOptions().position(miPosicion)
+
                     if (titulo.isNotEmpty()) {
                         markerOptions.title(titulo)
                     }
@@ -130,6 +171,7 @@ class MapsFragment : Fragment() {
             }
         }
     }
+
 //da permisos
     private fun iniciaServicio() {
         if (ActivityCompat.checkSelfPermission(requireContext(),

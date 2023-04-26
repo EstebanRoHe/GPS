@@ -10,5 +10,6 @@ data class Ubicacion(
     @PrimaryKey(autoGenerate = true) val id: Long?,
     val latitud: Double,
     val longitud: Double,
-    val fecha: Date
+    val fecha: Date,
+    val poligano : Boolean
 )

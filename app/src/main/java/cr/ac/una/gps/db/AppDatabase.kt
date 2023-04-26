@@ -15,6 +15,7 @@ import cr.ac.una.gps.entity.Ubicacion
 abstract class AppDatabase : RoomDatabase() {
     abstract fun ubicacionDao(): UbicacionDao
 
+
     companion object {
         private var instance: AppDatabase? = null
 
