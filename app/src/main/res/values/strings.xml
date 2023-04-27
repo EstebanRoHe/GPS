@@ -2,7 +2,7 @@
     <string name="app_name">GPS</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="nav_home">Home</string>
+    <string name="nav_home">Poligono</string>
     <string name="nav_maps">Ubicacion actual</string>
     <string name="nav_acercade">Acerca de...</string>
     <string name="drawer_open">Drawer_open</string>

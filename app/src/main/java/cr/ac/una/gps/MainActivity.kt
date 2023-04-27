@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         lateinit var fragment: Fragment
 
         when(item.itemId){
-           /* R.id.home-> {
-                fragment = HomeFragment.newInstance("string1", "string2")
-            }*/
+            R.id.home-> {
+                fragment = HomeFragment()
+            }
             R.id.acercade-> {
                 fragment = AcercadeFragment.newInstance("string1", "string2")
             }

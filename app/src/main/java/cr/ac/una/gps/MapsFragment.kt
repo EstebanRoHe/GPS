@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -23,9 +24,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polygon
 import com.google.android.gms.maps.model.PolygonOptions
 import com.google.maps.android.PolyUtil
+import cr.ac.una.gps.adapter.PoligonoAdapter
+import cr.ac.una.gps.dao.PoligonoDao
 
 import cr.ac.una.gps.dao.UbicacionDao
 import cr.ac.una.gps.db.AppDatabase
+import cr.ac.una.gps.entity.Poligono
 
 
 import cr.ac.una.gps.entity.Ubicacion
@@ -35,22 +39,22 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 class MapsFragment : Fragment() {
+
     private lateinit var map: GoogleMap
     private var titulo: String = ""
     private lateinit var ubicacionDao: UbicacionDao
+    private lateinit var poligonoDao: PoligonoDao
     private lateinit var locationReceiver: BroadcastReceiver
-    //private lateinit var ubicaciones: List<Ubicacion>
     private lateinit var polygon: Polygon
-
+    //private var polygonOptions = PolygonOptions()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prefs = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         ubicacionDao = AppDatabase.getInstance(requireContext()).ubicacionDao()
+        poligonoDao = AppDatabase.getInstance(requireContext()).poligonoDao()
         titulo = prefs.getString("marker_label", "") ?: ""
 
     }
-
-
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -59,28 +63,10 @@ class MapsFragment : Fragment() {
 
     }
 
-    private fun createPolygon(): Polygon {
-        val polygonOptions = PolygonOptions()
-
-       /* polygonOptions.add(LatLng(10.630345,-84.8094284))
-        polygonOptions.add(LatLng( 10.2954322,-85.1005661))
-        polygonOptions.add(LatLng( 10.1710993,-84.4249069 ))
-        polygonOptions.add(LatLng(  10.5385502,-84.161235 ))
-        polygonOptions.add(LatLng( 10.7437006,-84.4633591 ))
-        polygonOptions.add(LatLng(  10.630345,-84.8094284))
-*/
-        polygonOptions.add(LatLng(-14.0095923,108.8152324))
-        polygonOptions.add(LatLng( -43.3897529,104.2449199))
-        polygonOptions.add(LatLng( -51.8906238,145.7292949))
-        polygonOptions.add(LatLng( -31.7289525,163.3074199))
-        polygonOptions.add(LatLng( -7.4505398,156.2761699))
-        polygonOptions.add(LatLng( -14.0095923,108.8152324))
-
-        return map.addPolygon(polygonOptions)
-
-    }
-
     private fun isLocationInsidePolygon(location: LatLng): Boolean {
+        if (!::polygon.isInitialized) {
+            return false
+        }
         return polygon != null && PolyUtil.containsLocation(location, polygon?.points, true)
     }
 
@@ -93,13 +79,11 @@ class MapsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
         pintar()
-
 
         locationReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -110,33 +94,48 @@ class MapsFragment : Fragment() {
                 if (titulo.isNotEmpty()) {
                     marcador.title(titulo)
                 }
-
-                polygon = createPolygon()
-                if (isLocationInsidePolygon(posicion)){
-                    println("+++++++++++++++++++++++++++++++++sidney esta en el mapa" )
-                }
-
-                if (!isLocationInsidePolygon(posicion)){
-                    println("+++++++++++++++++++++++++++++++++CR no  esta en el mapa" )
+                lifecycleScope.launch {
+                    polygon = createPolygon()
                 }
 
                 map.addMarker(marcador)
-               // map.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 12f))
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 9f))
 
-                val entity = Ubicacion(null, latitud, longitud, Date(), !isLocationInsidePolygon(posicion))
+                val entity = Ubicacion(null, latitud, longitud, Date(), isLocationInsidePolygon(posicion))
                 insertEntity(entity)
             }
         }
         context?.registerReceiver(locationReceiver, IntentFilter("ubicacionActualizada"))
 
-
     }
 
+    private suspend fun createPolygon(): Polygon {
+        val polygonOptions = PolygonOptions()
+        val poligonos = withContext(Dispatchers.IO) {
+            poligonoDao.getAll() as List<Poligono>
+        }
+        if (poligonos.size < 3) {
+            polygonOptions.add(LatLng(-14.0095923,108.8152324))
+            polygonOptions.add(LatLng( -43.3897529,104.2449199))
+            polygonOptions.add(LatLng( -51.8906238,145.7292949))
+            polygonOptions.add(LatLng( -31.7289525,163.3074199))
+            polygonOptions.add(LatLng( -7.4505398,156.2761699))
+            polygonOptions.add(LatLng( -14.0095923,108.8152324))
+            return map.addPolygon(polygonOptions)
+        }
+        poligonos.forEach { poligono ->
+            val latitud = poligono.latitud
+            val longitud = poligono.longitud
+            polygonOptions.add(LatLng(latitud, longitud))
+        }
+
+        return map.addPolygon(polygonOptions)
+    }
 
     fun pintar() {// es pintar todos los marcadores ya guardados en la base de datos
         Thread {
-            val ubicaciones = ubicacionDao.getAll() as List<Ubicacion>
-            //Para actualizar la interfaz de usuario con los resultados de la base de datos, se utiliza la función runOnUiThread() que permite ejecutar código en el hilo principal. Dentro de esta función, se itera sobre las ubicaciones y se agregan los marcadores al mapa.
+            val ubicaciones =
+                ubicacionDao.getAll() as List<Ubicacion> //Para actualizar la interfaz de usuario con los resultados de la base de datos, se utiliza la función runOnUiThread() que permite ejecutar código en el hilo principal. Dentro de esta función, se itera sobre las ubicaciones y se agregan los marcadores al mapa.
             activity?.runOnUiThread {
                 ubicaciones.forEach {
                     val miPosicion = LatLng(it.latitud, it.longitud)
@@ -147,7 +146,7 @@ class MapsFragment : Fragment() {
                     }
                     map.addMarker(markerOptions)
                 }
-           }
+            }
         }.start()
     }
 
@@ -162,7 +161,8 @@ class MapsFragment : Fragment() {
         // Registrar el receptor para recibir actualizaciones de ubicación
         context?.registerReceiver(locationReceiver, IntentFilter("ubicacionActualizada"))
     }
-//inserta a la base de datos
+
+    //inserta a la base de datos
     private fun insertEntity(entity: Ubicacion) {
         //  private lateinit var ubicacionDao: UbicacionDAO
         lifecycleScope.launch {
@@ -171,10 +171,10 @@ class MapsFragment : Fragment() {
             }
         }
     }
-
-//da permisos
+    //da permisos
     private fun iniciaServicio() {
-        if (ActivityCompat.checkSelfPermission(requireContext(),
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -194,4 +194,5 @@ class MapsFragment : Fragment() {
             context?.startService(intent)
         }
     }
+
 }
