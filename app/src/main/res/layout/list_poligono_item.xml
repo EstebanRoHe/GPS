@@ -8,20 +8,42 @@ android:paddingBottom="20dp"
     >
 
     <TextView
-        android:id="@+id/textLongitud"
+        android:id="@+id/txtidPoligono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Latitud : "
+        android:text="Id : "
         android:textColor="#E4D7D7"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/idPoligono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:text="TextView"
+        android:textColor="#E4D7D7"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/txtidPoligono"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textLongitud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Latitud : "
+        android:textColor="#E4D7D7"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/idPoligono"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/longitudPoligono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textColor="#E4D7D7"
         android:textSize="15sp"
@@ -32,7 +54,7 @@ android:paddingBottom="20dp"
         android:id="@+id/textLatitud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:text="Longitud : "
         android:textColor="#E4D7D7"
         android:textSize="15sp"
@@ -43,7 +65,7 @@ android:paddingBottom="20dp"
         android:id="@+id/latitudPoligono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textColor="#E4D7D7"
         android:textSize="15sp"

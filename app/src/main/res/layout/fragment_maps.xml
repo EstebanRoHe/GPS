@@ -11,27 +11,39 @@
     tools:context=".MapsFragment"
     map:uiZoomControls="true"
     map:uiRotateGestures="true">
-<!--
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/filtroPorFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Seach for date MM/dd/yyyy"
+            android:textColor="@color/black_overlay"
+            android:textColorHint="#DA454343"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <Button
-            android:id="@+id/btnActual"
+            android:id="@+id/btnActualizar"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#AEFFFFFF"
+            android:background="#AE5A4747"
             android:backgroundTint="#79654040"
-
             android:textColor="#D21E1A1A"
             android:textSize="20sp"
             app:iconSize="28dp"
             app:iconTint="#7A000000"
-            map:icon="@android:drawable/ic_menu_mylocation" />
+            map:icon="@android:drawable/ic_search_category_default" />
+            <!--map:icon="@android:drawable/ic_menu_mylocation"-->
+
 
     </LinearLayout>
--->
+
 </fragment>

@@ -2,6 +2,7 @@ package cr.ac.una.gps.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.text.SimpleDateFormat
 import java.util.*
 
 

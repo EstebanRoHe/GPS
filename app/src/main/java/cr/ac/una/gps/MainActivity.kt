@@ -60,6 +60,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragment = MapsFragment()
             }
 
+            R.id.telefono-> {
+                fragment = TelefonoFragment()
+            }
+
 
         }
 

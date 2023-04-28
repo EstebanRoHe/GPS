@@ -50,17 +50,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/longitudPolygono" />
 
+    <EditText
+        android:id="@+id/eliminarPolygono"
+        android:layout_width="219dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:hint="Id del Poligono a eliminar"
+        android:textColor="@color/white"
+        android:textColorHint="#BAFFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGuardarPoligono" />
+
+
+    <Button
+        android:id="@+id/btneliminarPoligono"
+        style="@style/Widget.Material3.Button.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:backgroundTint="#9C1241"
+        android:backgroundTintMode="src_over"
+        android:text="Eliminar"
+        android:textColorHighlight="#9A2828"
+        android:textColorLink="#AE2C2C"
+        android:textSize="20sp"
+        app:icon="@android:drawable/ic_delete"
+        app:iconSize="28dp"
+        app:iconTint="#D3FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/eliminarPolygono"
+        app:layout_constraintTop_toBottomOf="@+id/longitudPolygono" />
+
     <ListView
         android:id="@+id/listPoligono"
-        android:layout_width="380dp"
-        android:layout_height="400dp"
+        android:layout_width="390dp"
+        android:layout_height="366dp"
         android:background="#D31E1D1D"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGuardarPoligono">
+        app:layout_constraintTop_toBottomOf="@+id/eliminarPolygono">
 
 
     </ListView>

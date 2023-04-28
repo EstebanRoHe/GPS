@@ -21,6 +21,11 @@
             android:title="@string/nav_home"
             android:icon="@android:drawable/ic_dialog_map"/>
 
+        <item
+            android:id="@+id/telefono"
+            android:title="@string/telefonoEmergencia"
+            android:icon="@android:drawable/ic_dialog_map"/>
+
 
 
 

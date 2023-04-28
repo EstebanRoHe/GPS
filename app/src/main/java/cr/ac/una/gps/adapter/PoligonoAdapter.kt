@@ -18,19 +18,15 @@ class PoligonoAdapter (context: Context, poligonos: List<Poligono>) :
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.list_poligono_item, parent, false)
         }
-
         val poligono = getItem(position)
 
-
-        val latitudPoligoinoTextView = view!!.findViewById<TextView>(R.id.latitudPoligono)
+        val idPoligoinoTextView = view!!.findViewById<TextView>(R.id.idPoligono)
+        val latitudPoligoinoTextView = view.findViewById<TextView>(R.id.latitudPoligono)
         val longitudPoligoinoTextView = view.findViewById<TextView>(R.id.longitudPoligono)
 
-
-
-
-        latitudPoligoinoTextView.text = poligono!!.latitud.toString()
+        idPoligoinoTextView.text = poligono!!.id.toString()
+        latitudPoligoinoTextView.text = poligono.latitud.toString()
         longitudPoligoinoTextView.text = poligono.longitud.toString()
-
 
 
 

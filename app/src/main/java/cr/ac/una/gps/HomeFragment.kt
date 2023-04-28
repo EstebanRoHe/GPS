@@ -22,10 +22,19 @@ class HomeFragment : Fragment() {
     private lateinit var longitudPolygono: EditText
     private lateinit var listView: ListView
     private lateinit var poligonos: List<Poligono>
+    private lateinit var eliminarPoligono : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         poligonoDao = AppDatabase.getInstance(requireContext()).poligonoDao()
+    }
+    private fun deletePoligono(id: Int) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                poligonoDao.deleteById(id)
+                pintarPoligono()
+            }
+        }
     }
 
     private fun insertPoligono(entity: Poligono) {
@@ -67,6 +76,13 @@ class HomeFragment : Fragment() {
             val longitud = longitudPolygono.text.toString().toDouble()
             val entity = Poligono(null, latitud, longitud)
             insertPoligono(entity)
+        }
+
+        eliminarPoligono = view.findViewById(R.id.eliminarPolygono)
+        val btnEliminarPolygono = view.findViewById<Button>(R.id.btneliminarPoligono)
+        btnEliminarPolygono.setOnClickListener {
+            val id = eliminarPoligono.text.toString().toInt()
+            deletePoligono(id)
         }
 
         return view
