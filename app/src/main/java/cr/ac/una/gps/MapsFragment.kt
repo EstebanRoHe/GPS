@@ -145,21 +145,20 @@ class MapsFragment : Fragment() {
             poligonoDao.getAll() as List<Poligono>
         }
         if (poligonos.size < 3) {
-
+/*
             polygonOptions.add(LatLng(10.630345,-84.8094284))
             polygonOptions.add(LatLng( 10.2954322,-85.1005661))
             polygonOptions.add(LatLng( 10.1710993,-84.4249069 ))
             polygonOptions.add(LatLng(  10.5385502,-84.161235 ))
             polygonOptions.add(LatLng( 10.7437006,-84.4633591 ))
             polygonOptions.add(LatLng(  10.630345,-84.8094284))
-            /*
+            */
             polygonOptions.add(LatLng(-14.0095923,108.8152324))
             polygonOptions.add(LatLng( -43.3897529,104.2449199))
             polygonOptions.add(LatLng( -51.8906238,145.7292949))
             polygonOptions.add(LatLng( -31.7289525,163.3074199))
             polygonOptions.add(LatLng( -7.4505398,156.2761699))
             polygonOptions.add(LatLng( -14.0095923,108.8152324))
-*/
 
             return map.addPolygon(polygonOptions)
         }
@@ -179,14 +178,17 @@ class MapsFragment : Fragment() {
                 activity?.runOnUiThread {
                     ubicaciones.forEach {
                         val miPosicion = LatLng(it.latitud, it.longitud)
-                        val markerOptions = MarkerOptions().position(miPosicion)
+                        var marker = MarkerOptions().position(miPosicion)
+                        if (isLocationInsidePolygon(miPosicion)){
+
+                            marker = MarkerOptions().position(miPosicion).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                        }
 
                         if (titulo.isNotEmpty()) {
-                            markerOptions.title(titulo)
+                            marker.title(titulo)
                         }
                         if (org.apache.commons.lang3.time.DateUtils.isSameDay(fechaFiltro, it.fecha)) {
-                            println("entra")
-                            map.addMarker(markerOptions)
+                            map.addMarker(marker)
                         }
                     }
                 }
@@ -226,7 +228,7 @@ class MapsFragment : Fragment() {
                 ubicaciones.forEach {
                     val miPosicion = LatLng(it.latitud, it.longitud)
                     var markerOptions = MarkerOptions().position(miPosicion)
-
+                   // println(it.fecha)
                     if (isLocationInsidePolygon(miPosicion)){
                         markerOptions = MarkerOptions().position(miPosicion).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                     }
