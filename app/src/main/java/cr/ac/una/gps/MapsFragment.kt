@@ -144,7 +144,8 @@ class MapsFragment : Fragment() {
         val poligonos = withContext(Dispatchers.IO) {
             poligonoDao.getAll() as List<Poligono>
         }
-        if (poligonos.size < 3) {
+       if (poligonos.size < 1) {
+           polygonOptions.add(LatLng(0.0,-0.0))
 /*
             polygonOptions.add(LatLng(10.630345,-84.8094284))
             polygonOptions.add(LatLng( 10.2954322,-85.1005661))
@@ -152,16 +153,16 @@ class MapsFragment : Fragment() {
             polygonOptions.add(LatLng(  10.5385502,-84.161235 ))
             polygonOptions.add(LatLng( 10.7437006,-84.4633591 ))
             polygonOptions.add(LatLng(  10.630345,-84.8094284))
-            */
+
             polygonOptions.add(LatLng(-14.0095923,108.8152324))
             polygonOptions.add(LatLng( -43.3897529,104.2449199))
             polygonOptions.add(LatLng( -51.8906238,145.7292949))
             polygonOptions.add(LatLng( -31.7289525,163.3074199))
             polygonOptions.add(LatLng( -7.4505398,156.2761699))
             polygonOptions.add(LatLng( -14.0095923,108.8152324))
-
-            return map.addPolygon(polygonOptions)
-        }
+*/
+           return map.addPolygon(polygonOptions)
+       }
         poligonos.forEach { poligono ->
             val latitud = poligono.latitud
             val longitud = poligono.longitud
