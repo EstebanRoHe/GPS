@@ -24,7 +24,7 @@
         <item
             android:id="@+id/telefono"
             android:title="@string/telefonoEmergencia"
-            android:icon="@android:drawable/ic_dialog_map"/>
+            android:icon="@android:drawable/ic_partial_secure"/>
 
 
 

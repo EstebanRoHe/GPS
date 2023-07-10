@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ConfiguracionFragment"
-    android:background="@color/black"
-    android:backgroundTint="#D3000000">
+    >
 
 
     <EditText
@@ -31,6 +30,7 @@
         android:backgroundTint="#B2009688"
         android:backgroundTintMode="src_over"
         android:text="Guardar"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:icon="@android:drawable/ic_input_add"
         app:iconSize="28dp"

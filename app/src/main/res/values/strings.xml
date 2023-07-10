@@ -9,11 +9,10 @@
     <string name="drawer_close">Drawer_close</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="integrantes">Esteban Rojas Herrera, y Oscar Zamora Ramirez</string>
+    <string name="integrantes"> La aplicación permite obtener y utilizar la ubicación geográfica en tiempo real del dispositivo para ofrecer servicios personalizados.</string>
     <string name="salir">salir</string>
     <string name="configurar_text">configurar_text</string>
-    <string name="nav_configuracion">Configuracion</string>
-    <string name="nombresIntegrantes">Integrantes :</string>
+    <string name="nav_configuracion">Configuración</string>
     <string name="telefonoEmergencia">Phone</string>
     <string name="txtTelefono">txtTelefono</string>
 

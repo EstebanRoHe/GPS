@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    android:backgroundTint="#D3000000"
     tools:context=".AcercadeFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -18,7 +16,6 @@
         android:background="#4F000000"
         android:backgroundTint="#17000000"
         android:fontFamily="@font/roboto_condensed_bold_italic"
-        android:text="@string/nombresIntegrantes"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
@@ -47,6 +44,7 @@
         android:backgroundTint="#B2009688"
         android:backgroundTintMode="src_over"
         android:text="Cerrar"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:icon="@android:drawable/ic_delete"
         app:iconSize="28dp"

@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConfiguracionFragment"
-    android:background="@color/black"
-    android:backgroundTint="#D3000000">
+    tools:context=".ConfiguracionFragment">
 
 
     <EditText
@@ -15,6 +13,7 @@
         android:layout_height="wrap_content"
         android:hint="Escriba el nombre del marcado"
         android:textColor="@color/white"
+
         android:textColorHint="#BAFFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +28,7 @@
         android:backgroundTint="#B2009688"
         android:backgroundTintMode="src_over"
         android:text="Guardar"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:icon="@android:drawable/ic_input_add"
         app:iconSize="28dp"
