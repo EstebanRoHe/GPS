@@ -43,8 +43,8 @@ class LocationService : Service() {
             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return super.onStartCommand(intent, flags, startId)
         }
-        //da la actualizacion de lo que dura en actualizar el mapa
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0f, locationListener)
+        //da la actualizacion de lo que dura en actualizar el mapa LocationManager.GPS_PROVIDER para gps y LocationManager.NETWORK_PROVIDER para internet
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0f, locationListener)
         return super.onStartCommand(intent, flags, startId)
 
     }

@@ -111,7 +111,7 @@ class MapsFragment : Fragment() {
                     marcador.title(titulo)
                 }
                 map.addMarker(marcador)
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 8f))
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 14f))
 
                 val entity = Ubicacion(null, latitud, longitud, Date(), isLocationInsidePolygon(posicion))
                 insertEntity(entity)
@@ -146,21 +146,7 @@ class MapsFragment : Fragment() {
         }
        if (poligonos.size < 1) {
            polygonOptions.add(LatLng(0.0,-0.0))
-/*
-            polygonOptions.add(LatLng(10.630345,-84.8094284))
-            polygonOptions.add(LatLng( 10.2954322,-85.1005661))
-            polygonOptions.add(LatLng( 10.1710993,-84.4249069 ))
-            polygonOptions.add(LatLng(  10.5385502,-84.161235 ))
-            polygonOptions.add(LatLng( 10.7437006,-84.4633591 ))
-            polygonOptions.add(LatLng(  10.630345,-84.8094284))
 
-            polygonOptions.add(LatLng(-14.0095923,108.8152324))
-            polygonOptions.add(LatLng( -43.3897529,104.2449199))
-            polygonOptions.add(LatLng( -51.8906238,145.7292949))
-            polygonOptions.add(LatLng( -31.7289525,163.3074199))
-            polygonOptions.add(LatLng( -7.4505398,156.2761699))
-            polygonOptions.add(LatLng( -14.0095923,108.8152324))
-*/
            return map.addPolygon(polygonOptions)
        }
         poligonos.forEach { poligono ->
@@ -195,31 +181,11 @@ class MapsFragment : Fragment() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                // Manejo de excepciones, como mostrar un mensaje de error o registrar la excepción
+
             }
         }.start()
     }
 
-    /*fun pintarPorFecha(fechaFiltro : Date) {
-
-        Thread {
-            val ubicaciones = ubicacionDao.getAll() as List<Ubicacion>
-            activity?.runOnUiThread {
-                ubicaciones.forEach {
-                    val miPosicion = LatLng(it.latitud, it.longitud)
-                    val markerOptions = MarkerOptions().position(miPosicion)
-
-                    if (titulo.isNotEmpty()) {
-                        markerOptions.title(titulo)
-                    }
-                    if(org.apache.commons.lang3.time.DateUtils.isSameDay(fechaFiltro, it.fecha)) {
-                        println("entra")
-                        map.addMarker(markerOptions)
-                    }
-                }
-            }
-        }.start()
-    }*/
 
     fun pintar() {// es pintar todos los marcadores ya guardados en la base de datos
         Thread {
@@ -252,13 +218,11 @@ class MapsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // Registrar el receptor para recibir actualizaciones de ubicación
         context?.registerReceiver(locationReceiver, IntentFilter("ubicacionActualizada"))
     }
 
     //inserta a la base de datos
     private fun insertEntity(entity: Ubicacion) {
-        //  private lateinit var ubicacionDao: UbicacionDAO
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 ubicacionDao.insert(entity)
@@ -322,3 +286,41 @@ class MapsFragment : Fragment() {
     }
 
 }
+
+
+/*fun pintarPorFecha(fechaFiltro : Date) {
+
+    Thread {
+        val ubicaciones = ubicacionDao.getAll() as List<Ubicacion>
+        activity?.runOnUiThread {
+            ubicaciones.forEach {
+                val miPosicion = LatLng(it.latitud, it.longitud)
+                val markerOptions = MarkerOptions().position(miPosicion)
+
+                if (titulo.isNotEmpty()) {
+                    markerOptions.title(titulo)
+                }
+                if(org.apache.commons.lang3.time.DateUtils.isSameDay(fechaFiltro, it.fecha)) {
+                    println("entra")
+                    map.addMarker(markerOptions)
+                }
+            }
+        }
+    }.start()
+}*/
+
+/*
+            polygonOptions.add(LatLng(10.630345,-84.8094284))
+            polygonOptions.add(LatLng( 10.2954322,-85.1005661))
+            polygonOptions.add(LatLng( 10.1710993,-84.4249069 ))
+            polygonOptions.add(LatLng(  10.5385502,-84.161235 ))
+            polygonOptions.add(LatLng( 10.7437006,-84.4633591 ))
+            polygonOptions.add(LatLng(  10.630345,-84.8094284))
+
+            polygonOptions.add(LatLng(-14.0095923,108.8152324))
+            polygonOptions.add(LatLng( -43.3897529,104.2449199))
+            polygonOptions.add(LatLng( -51.8906238,145.7292949))
+            polygonOptions.add(LatLng( -31.7289525,163.3074199))
+            polygonOptions.add(LatLng( -7.4505398,156.2761699))
+            polygonOptions.add(LatLng( -14.0095923,108.8152324))
+*/
